@@ -1,0 +1,31 @@
+
+
+function xmin = findMin(descentMethod, penalty, gradPenalty, u0, Y)
+
+tStart0 = tic; % starts a stopwatch timer to measure performance
+numIter = 100;
+numTries = 10;
+stationary_points = [];
+
+
+for i = 1:numIter
+    tStart = tic;  % internal timer
+    tolerance1 = 0.01; %tolerance for search methods
+    tolerance2 = 0.001; % tolerance for Golden section search
+    tolerance3 = 0.01
+    T = 2; %step size
+    k = 0;
+    uk = [100 100 100];
+    while (k==0 || norm(uprev - uk) > tolerance3) 
+        uprev = uk;
+        ak = k;
+        for j = 1 = 
+        [uk,f,numCalc] = descentMethod(penalty, gradPenalty, u0, tolerance1, tolerance2, T);
+
+    end 
+    % [xmin,f,k] = BFGS('f', 'gradf', x0, eye(2), tolerance1, tolerance2, T) ;
+    
+end
+
+averageTime = toc(tStart0)/numInstances;
+disp(['Average time for ', num2str(numInstances), ' is ', num2str(averageTime)]);

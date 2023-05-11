@@ -1,0 +1,95 @@
+
+%
+% INPUT: 
+%
+%   f               - the multivariable function to minimise (a separate
+%                       user-defined Matlab function m-file)
+%
+%  gradf        - function which returns the gradient vector of f evaluated
+%                       at x (also a separate user-defined Matlab function
+%                       m-file)
+%
+% x0                - the starting iterate
+%
+% tolerance1   - tolerance for stopping criterion of steepest descent
+%                           method
+%
+% tolerance2  - tolerance for stopping criterion of line minimisation (eg: in golden section search)
+%
+% T                     - parameter used by the "improved algorithm for
+%                           finding an upper bound for the minimum" along
+%                           each given descent direction
+%
+% OUTPUT:
+%
+% xminEstimate  - estimate of the minimum
+%
+% fminEstimate  - the value of f at xminEstimate
+
+function [xminEstimate, fminEstimate,k] = BFGS(penalty, gradPenalty, ak, u0, Y, tolerance1, tolerance2, T)
+tic %starts timer
+
+k = 0;  % initialize iteration counter
+iteration_number=0; %initialise count
+H0 = eye(3);
+
+uk = u0;
+uk_old=u0;
+H_old=H0;
+while ( norm(feval(gradPenalty, uk, ak, Y)) >= tolerance1 )
+   iteration_number = iteration_number + 1;   
+    % calculate steepest descent direction vector at current iterate xk
+    %du = feval(gradf, xk);
+    %dk = -du/norm(du);
+    
+    H_old = H_old / max(max(H_old)); % Correction if det H_old gets too lagre or small
+    
+    dk = transpose(-H_old*transpose(feval(gradf, uk))); %gives dk as a row vector
+    
+    % minimise f with respect to t in the direction dk, which involves
+    % two steps:
+    
+            % (1) find upper and lower bound,    [a,b]   ,for the stepsize t using the "improved
+            % procedure" presented in the lecture notes
+    
+            [a, b] = multiVariableHalfOpen(f, xk, dk, T);
+        
+               
+             % (2) use golden section algorithm (suitably modified for
+             % functions of more than one variable) to estimate the 
+             % stepsize t in [a,b] which minimises f in the direction dk
+             % starting at xk
+                 
+             [tmin, fmin] = multiVariableGoldenSectionSearch(f, a, b, tolerance2, xk, dk);
+             
+             % note: we do not actually need fmin, but we do need
+             % tmin
+             
+             % update the steepest descent iteration counter and the
+             % current iterate
+             
+             k = k + 1;
+             
+             xk = xk + tmin*dk;
+             xk_new = xk_old +tmin*dk;
+             
+             sk=(xk_new -xk_old)'; %column vector
+            
+             gk= (feval(gradf,xk_new)-feval(gradf,xk_old))'; %column vector
+             
+             rk=(H_old*gk)/(sk'*gk);
+             
+             H_new = H_old + (1 + rk'*gk)/(sk'*gk)*(sk*sk') - (sk*rk') - (rk*sk');
+             
+             xk_old=xk_new;
+             
+             H_old=H_new;
+             
+end  
+   
+    % assign output values
+    
+   
+    
+    xminEstimate = xk;
+    fminEstimate = feval(f,xminEstimate);
