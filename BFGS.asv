@@ -60,7 +60,7 @@ while ( norm(feval(gradPenalty, uk, ak, Y)) >= tolerance1 )
              % stepsize t in [a,b] which minimises f in the direction dk
              % starting at xk
                  
-             [tmin, ~] = multiVariableGoldenSectionSearch(penalty, ak, Y, a, b, tolerance2, uk, dk);
+             [tmin, fmin] = multiVariableGoldenSectionSearch(penalty, ak, Y, a, b, tolerance2, uk, dk);
              
              % note: we do not actually need fmin, but we do need
              % tmin
@@ -81,7 +81,7 @@ while ( norm(feval(gradPenalty, uk, ak, Y)) >= tolerance1 )
              
              H_new = H_old + (1 + rk'*gk)/(sk'*gk)*(sk*sk') - (sk*rk') - (rk*sk');
              
-             uk_old=uk_new;
+             xk_old=xk_new;
              
              H_old=H_new;
              
@@ -91,5 +91,5 @@ end
     
    
     
-    xminEstimate = uk;
-    fminEstimate = feval(penalty,xminEstimate,ak,Y);
+    xminEstimate = xk;
+    fminEstimate = feval(f,xminEstimate);
