@@ -1,8 +1,6 @@
 
+function umin = findSP(descentMethod, penalty, gradPenalty, Y, tolerance1, tolerance2, tolerance3, T, numTries)
 
-function [umin, time] = findSP(descentMethod, penalty, gradPenalty, Y, tolerance1, tolerance2, tolerance3, T, numTries)
-
-tStart = tic; % starts a stopwatch timer to measure performance
 k = 0;
 uk = [100 100 100];
 while (k==0 || norm(uprev - uk) > tolerance3) 
@@ -21,5 +19,4 @@ while (k==0 || norm(uprev - uk) > tolerance3)
     uk = umin;
     k = k+1;
 end
-time = toc(tStart);
 umin = uk;

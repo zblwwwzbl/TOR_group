@@ -9,4 +9,3 @@ function val = l2(u, alpha, Y)
     end
     val = v+sums*alpha/2;
 end
-
