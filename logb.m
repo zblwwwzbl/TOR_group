@@ -8,4 +8,7 @@ function val = logb(u, alpha, Y)
         sums = sums + log(norm(x-Y(i,:))+v);
     end
     val = v-sums*1/alpha;
+    if (~isreal(val))
+        val = Inf;
+    end
 end

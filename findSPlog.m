@@ -1,5 +1,5 @@
 
-function umin = findSP(descentMethod, penalty, gradPenalty, Y, tolerance1, tolerance2, tolerance3, T, numTries)
+function umin = findSPlog(descentMethod, penalty, gradPenalty, Y, tolerance1, tolerance2, tolerance3, T, numTries)
 
 k = 0;
 uk = [100 100 100];
