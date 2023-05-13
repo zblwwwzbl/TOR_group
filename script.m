@@ -14,14 +14,20 @@ range = 4; % controls coordinate of yi
 for size = 1:maxYSize
     for i =1:numTrials
         Y = range*(rand(size,2)-0.5);
+        u0 = rand(1,3);
         index = (size-1)*numTrials + i;
-        for numTries = 1:10
+
         tStart = tic;
         umin = findSP('BFGS','l2','gradl2', Y,tolerance1,tolerance2,tolerance3,T,10);
         xproj = orthogonalProjection(umin);
         fmin = f(xproj, Y);
         tElapsed = toc(tStart);
-        l2_points(index,:) = ['BFGSsize, xproj, fmin, tElapsed];
+        l2_points(index,:) = [size, xproj, fmin, tElapsed];
+
+        tStart = tic;
+        umin = runBuiltin(u0, Y);
+        tElapsed = toc(tStart);
+        builtin_points(index, :) = [size, umin, tElapsed];
     end
 end
 header = {'size', 'x1', 'x2', 'fmin', 'time'};
