@@ -1,3 +1,4 @@
+%orthogonally project a point to the nearest point in the constraint
 function xproj = orthogonalProjection(u)
     x = [u(1), u(2)];
     xproj = x;

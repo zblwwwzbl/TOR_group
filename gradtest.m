@@ -1,3 +1,4 @@
+% This is a test function that is not used within our experiment
 syms x1 x2 v
 f = symfun(ff(x1,x2,v), [x1 x2 v]);
 f(1, 3, 5)

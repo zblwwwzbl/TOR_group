@@ -33,6 +33,10 @@ k = 0;  % initialize iteration counter
 uk = u0;
 
 while ( norm(feval(gradPenalty, uk, ak, Y)) >= tolerance1 )
+
+    if (k >= 1000) 
+        break; 
+    end
       
     % calculate steepest descent direction vector at current iterate xk
     %du = feval(gradf, xk);

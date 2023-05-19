@@ -1,26 +1,4 @@
-% Matlab function m-file:   steepestDescentMethod.m
-%
-% INPUT: 
-%
-%   f               - the multivariable function to minimise (a separate
-%                       user-defined Matlab function m-file)
-%
-%  gradf        - function which returns the gradient vector of f evaluated
-%                       at x (also a separate user-defined Matlab function
-%                       m-file)
-%
-% x0                - the starting iterate
-%
-% tolerance1   - tolerance for stopping criterion of steepest descent
-%                           method
-%
-% tolerance2  - tolerance for stopping criterion of line minimisation (eg: in golden section search)
-%
-% T                     - parameter used by the "improved algorithm for
-%                           finding an upper bound for the minimum" along
-%                           each given descent direction
-%
-% OUTPUT:
+% ASD algorithm. Adapted from code provided in assignment 2
 %
 % xminEstimate  - estimate of the minimum
 %
@@ -31,10 +9,15 @@ function [xminEstimate, fminEstimate,k] = acceleratedSD(penalty, gradPenalty, ak
 k = 0;  % initialize iteration counter
 
 uk = u0;
-lambdak = 0;
+% lambdak = 0;
 yk = u0;
+uprev = u0;
 
 while ( norm(feval(gradPenalty, uk, ak, Y)) >= tolerance1 ) 
+
+    if (k >= 1000) 
+        break; 
+    end
       
     % calculate steepest descent direction vector at current iterate xk
     %du = feval(gradf, xk);
@@ -65,12 +48,17 @@ while ( norm(feval(gradPenalty, uk, ak, Y)) >= tolerance1 )
              % current iterate
              
              k = k + 1;
-             yprev = yk;
-             yk = uk + tmin*dk;
-             lambdaprev = lambdak;
-             lambdak = (1 + sqrt(1 + 4*lambdak^2))/2;
-             gammak = (1-lambdaprev)/lambdak;
-             uk = (1-gammak)*yk + gammak*yprev;
+             % yprev = yk;
+             % yk = uk + tmin*dk;
+             % lambdaprev = lambdak;
+             % lambdak = (1 + sqrt(1 + 4*lambdak^2))/2;
+             % gammak = (1-lambdaprev)/lambdak;
+             % uk = (1-gammak)*yk + gammak*yprev;
+             uk = yk + tmin*dk;
+             yk = uk + (k-1)/(k+2)*(uk - uprev);
+             uprev = uk;
+
+
        end  
     
     % assign output values

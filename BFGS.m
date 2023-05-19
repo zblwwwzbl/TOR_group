@@ -1,24 +1,5 @@
 
-%
-% INPUT: 
-%
-%   f               - the multivariable function to minimise (a separate
-%                       user-defined Matlab function m-file)
-%
-%  gradf        - function which returns the gradient vector of f evaluated
-%                       at x (also a separate user-defined Matlab function
-%                       m-file)
-%
-% x0                - the starting iterate
-%
-% tolerance1   - tolerance for stopping criterion of steepest descent
-%                           method
-%
-% tolerance2  - tolerance for stopping criterion of line minimisation (eg: in golden section search)
-%
-% T                     - parameter used by the "improved algorithm for
-%                           finding an upper bound for the minimum" along
-%                           each given descent direction
+% BFGS algorithm. Taken from assignment 2
 %
 % OUTPUT:
 %
@@ -37,6 +18,9 @@ uk = u0;
 uk_old=u0;
 H_old=H0;
 while ( norm(feval(gradPenalty, uk, ak, Y)) >= tolerance1 )
+    if (k >= 1000) 
+        break; 
+    end
    iteration_number = iteration_number + 1;   
     % calculate steepest descent direction vector at current iterate xk
     %du = feval(gradf, xk);

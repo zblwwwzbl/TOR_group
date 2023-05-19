@@ -1,6 +1,7 @@
+% run the built in function fmincon with specified constraint and set Y
 function xmin = runBuiltin(u0,Y)
     fun = @(u)u(3);
-    [m,n] = size(Y);
+    [m,~] = size(Y);
     function [c,ceq] = mycon(u)
         for i=1:m
             c(i,:) = -norm([u(1) u(2)] - Y(i,:))-u(3);
